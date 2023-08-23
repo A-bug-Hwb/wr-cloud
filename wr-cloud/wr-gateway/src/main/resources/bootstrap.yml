@@ -1,0 +1,23 @@
+server:
+  port: 8080
+# Spring
+spring:
+  application:
+    # 应用名称
+    name: wr-gateway
+  profiles:
+    # 环境配置
+    active: dev
+  cloud:
+    nacos:
+      server-addr: 192.168.16.211:8848 #nacos服务地址
+      discovery:
+        namespace: 2607614d-309f-4312-981b-28fddbe46864
+      config:
+        namespace: 2607614d-309f-4312-981b-28fddbe46864
+        # 配置文件格式
+        file-extension: yaml
+        # 共享配置
+        shared-configs:
+          - data-id: application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+            group: DEFAULT_GROUP

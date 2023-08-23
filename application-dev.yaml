@@ -1,0 +1,28 @@
+spring:
+  redis:
+    database: 0
+    # 地址
+    host: 192.168.16.211
+    # 端口，默认为6379
+    port: 6379
+    # 密码
+    password:
+    # 连接超时时间
+    timeout: 5000
+    lettuce:
+      pool: 
+        max-active: 20
+        max-wait: -1
+        max-idle: 5
+        min-idle: 0
+  # Knife4j配置
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+logging:
+  file:
+    name: logs/logs
+  level:
+    com.mrz: debug
+    org.springframework.data.redis: DEBUG
+

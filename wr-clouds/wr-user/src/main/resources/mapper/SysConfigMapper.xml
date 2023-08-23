@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wr.mapper.SysConfigMapper">
+
+    <sql id="selectConfigVo">
+        select config_id, config_name, config_key, config_value, config_type, create_by, create_time, update_by, update_time, remark 
+		from sys_config
+    </sql>
+    <select id="selectConfigList" resultType="com.wr.domain.SysConfigPojo.SysConfigVo">
+        <include refid="selectConfigVo"/>
+        <where>
+				deleted = 0
+			<if test="configName != null and configName != ''">
+				AND config_name like concat('%', #{configName}, '%')
+			</if>
+			<if test="configType != null and configType != ''">
+				AND config_type = #{configType}
+			</if>
+			<if test="configKey != null and configKey != ''">
+				AND config_key like concat('%', #{configKey}, '%')
+			</if>
+			<if test="params.startTime != null and params.startTime != ''"><!-- 开始时间检索 -->
+				and date_format(create_time,'%y%m%d') &gt;= date_format(#{params.startTime},'%y%m%d')
+			</if>
+			<if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+				and date_format(create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+			</if>
+		</where>
+    </select>
+</mapper>

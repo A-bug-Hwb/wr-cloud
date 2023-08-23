@@ -1,0 +1,48 @@
+security:
+  ignore:
+    whites: "/wr-user/login,/wr-user/register,/wr-user/captchaImage,/wr-user/v2/api-docs,/wr-user/weChat/**,/wr-user/phone/**,/wr-engine/v2/api-docs,/wr-data/v2/api-docs"
+  xss: 
+    enabled: false
+    excludeUrls: 
+http:
+  port: 7001
+server:
+  port: 8001
+  #此处为证书的配置
+  ssl:
+    enabled: true
+    key-store-password: ******
+    #填写pfx-password.txt文件内的密码。
+    key-store-type: PKCS12
+    #默认即可
+    key-store: classpath:***.pfx
+spring:
+  application:
+    name: wr-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      globalcors: # 全局的跨域处理
+        cors-configurations:
+          '[/**]': #拦截那些请求
+            allowedOriginPatterns: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*" # 允许在请求中携带的头信息
+            allowCredentials: true # 是否允许携带cookie
+            maxAge: 360000 # 这次跨域检测的有效期
+      ## 路由
+      routes:
+        ## id只要唯一即可，名称任意
+        - id: wr-user-server
+          ## 使用了lb形式，从注册中心负载均衡的获取uri
+          uri: lb://wr-user
+          ## 配置断言
+          predicates:
+            - Path=/wr-user/**
+          # 去除一个前缀
+          filters:
+            - SwaggerHeaderFilter
+            - StripPrefix=1
+

@@ -1,0 +1,16 @@
+config:
+  wx:
+    appid: wx8c2ac56e62ec7ca5
+    appsecret: 21a271ab1e373769e0a32299d67705d8
+    redirecturl: https://ucapi.mairuizhe.cn/wr-user/weChat/callBack
+  ali:
+    sms:
+      accessid: LTAI5tMSzbCSFEVD1jGz3b4r
+      accesssecret: yEWjlAF1ZaHgmCh8v4CQJ1NtBJ1ZPC
+      templatecode: SMS_282665422
+  captcha: math
+server:
+  port: 7002
+  
+ 
+

@@ -1,0 +1,26 @@
+server:
+  port: 7001
+
+# Spring
+spring:
+  application:
+    # 应用名称
+    name: wr-user
+  profiles:
+    # 环境配置
+    active: dev
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848 #nacos服务地址
+      discovery:
+        namespace: 2607614d-309f-4312-981b-28fddbe46864
+      config:
+        namespace: 2607614d-309f-4312-981b-28fddbe46864
+        # 配置文件格式
+        file-extension: yaml
+        # 共享配置
+        shared-configs:
+          - data-id: application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+            group: DEFAULT_GROUP
+          - data-id: datasource-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+            group: DEFAULT_GROUP

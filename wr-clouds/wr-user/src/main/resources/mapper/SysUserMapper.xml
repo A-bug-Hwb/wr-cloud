@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wr.mapper.SysUserMapper">
+
+    <resultMap id="userResultMap" type="com.wr.domain.SysUserPojo.SysUserVo">
+        <id property="userId" column="user_id"/>
+        <result property="userName" column="user_name"/>
+        <result property="status" column="status"/>
+        <result property="admin" column="admin"/>
+        <collection property="userBasicInfoVo" column="user_id" select="com.wr.mapper.UserBasicInfoMapper.getInfo" ofType="com.wr.domain.SysUserPojo.UserBasicInfoPojo.UserBasicInfoVo"/>
+        <collection property="userMobileVos" column="user_id" select="com.wr.mapper.UserMobileMapper.getInfoList" ofType="com.wr.domain.SysUserPojo.UserMobilePojo.UserMobileVo"/>
+        <collection property="userMailboxVos" column="user_id" select="com.wr.mapper.UserMailboxMapper.getInfoList" ofType="com.wr.domain.SysUserPojo.UserMailboxPojo.UserMailboxVo"/>
+    </resultMap>
+
+    <sql id="selectUserVo">
+        select * from sys_user
+    </sql>
+
+    <select id="findUserByUsername" resultType="com.wr.domain.LoginPojo.SysUserBo">
+        select su.user_id,
+               su.user_name,
+               su.password,
+               su.status,
+               case when ur.role_id = 1 then true else false end 'admin'
+        from sys_user su
+                 left join sys_user_role ur on su.user_id = ur.user_id
+        where su.deleted = 0 and su.user_name = #{username}
+    </select>
+
+    <select id="getUserIds" resultType="Long">
+        select su.user_id
+        from sys_user su
+                 left join user_basic_info ubi on su.user_id = ubi.user_id
+                 left join user_mobile umb on su.user_id = umb.user_id
+                 left join user_mailbox uml on su.user_id =  uml.user_id
+        <where>
+            su.deleted = 0
+            <if test="userName != null and userName != ''">and su.user_name like concat("%",#{userName},"%")</if>
+            <if test="mobile != null and mobile != ''">and umb.deleted = 0 and umb.mobile like concat("%",#{mobile},"%")</if>
+            <if test="mailbox != null and mailbox != ''">and uml.deleted = 0 and uml.mailbox like concat("%",#{mailbox},"%")</if>
+            <if test="status != null">and su.status = #{status}</if>
+            <if test="params != null">
+                <if test="params.startTime != null">AND date_format(ubi.create_time,'%y%m%d') &gt;=
+                    date_format(#{params.startTime},'%y%m%d')
+                </if>
+                <if test="params.endTime != null">AND date_format(ubi.create_time,'%y%m%d') &lt;=
+                    date_format(#{params.endTime},'%y%m%d')
+                </if>
+            </if>
+        </where>
+    </select>
+
+    <select id="getUserList" resultMap="userResultMap">
+        select su.user_id, su.user_name, su.status, case when ur.role_id = 1 then true else false end 'admin' from
+        sys_user su left join sys_user_role ur on su.user_id = ur.user_id where su.user_id in
+        <foreach item='item' index='index' collection='userIds' open='(' separator=',' close=')'>
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="getUserInfo" resultMap="userResultMap">
+        select su.user_id, su.user_name, su.status, case when ur.role_id = 1 then true else false end 'admin' from
+        sys_user su left join sys_user_role ur on su.user_id = ur.user_id where su.user_id = #{userId}
+    </select>
+
+    <select id="selectAllocatedIdList" resultType="Long">
+        select distinct su.user_id
+        from sys_user su
+        left join user_basic_info ubi on su.user_id = ubi.user_id
+        left join user_mobile umb on su.user_id = umb.user_id
+        left join user_mailbox uml on su.user_id = uml.user_id
+        left join sys_user_role ur on su.user_id = ur.user_id
+        left join sys_role r on r.role_id = ur.role_id
+        <where>
+            su.deleted = 0 and r.role_id = #{roleId}
+            <if test="userName != null and userName != ''">and su.user_name like concat("%",#{userName},"%")</if>
+            <if test="mobile != null and mobile != ''">and umb.deleted = 0 and umb.mobile like
+                concat("%",#{mobile},"%")
+            </if>
+            <if test="mailbox != null and mailbox != ''">and uml.deleted = 0 and uml.mailbox like
+                concat("%",#{mailbox},"%")
+            </if>
+            <if test="status != null">and su.status = #{status}</if>
+            <if test="params != null">
+                <if test="params.startTime != null">AND date_format(ubi.create_time,'%y%m%d') &gt;=
+                    date_format(#{params.startTime},'%y%m%d')
+                </if>
+                <if test="params.endTime != null">AND date_format(ubi.create_time,'%y%m%d') &lt;=
+                    date_format(#{params.endTime},'%y%m%d')
+                </if>
+            </if>
+        </where>
+    </select>
+    <select id="selectUnallocatedIdList" resultType="Long">
+        select distinct su.user_id
+        from sys_user su
+        left join user_basic_info ubi on su.user_id = ubi.user_id
+        left join user_mobile umb on su.user_id = umb.user_id
+        left join user_mailbox uml on su.user_id = uml.user_id
+        left join sys_user_role ur on su.user_id = ur.user_id
+        left join sys_role r on r.role_id = ur.role_id
+        <where>
+            su.deleted = 0 and (r.role_id != #{roleId} or r.role_id IS NULL)
+            and su.user_id not in (select su.user_id from sys_user su inner join sys_user_role ur on su.user_id =
+            ur.user_id and ur.role_id = #{roleId})
+            <if test="userName != null and userName != ''">and su.user_name like concat("%",#{userName},"%")</if>
+            <if test="mobile != null and mobile != ''">and umb.deleted = 0 and umb.mobile like
+                concat("%",#{mobile},"%")
+            </if>
+            <if test="mailbox != null and mailbox != ''">and uml.deleted = 0 and uml.mailbox like
+                concat("%",#{mailbox},"%")
+            </if>
+            <if test="status != null">and su.status = #{status}</if>
+            <if test="params != null">
+                <if test="params.startTime != null">AND date_format(ubi.create_time,'%y%m%d') &gt;=
+                    date_format(#{params.startTime},'%y%m%d')
+                </if>
+                <if test="params.endTime != null">AND date_format(ubi.create_time,'%y%m%d') &lt;=
+                    date_format(#{params.endTime},'%y%m%d')
+                </if>
+            </if>
+        </where>
+    </select>
+
+    <select id="isAdmin" resultType="boolean">
+        SELECT
+            IFNULL(
+                    ( SELECT CASE WHEN role_id = 1 THEN 'true' ELSE 'false' END 'boo' FROM `sys_user_role` WHERE user_id = #{userId} ),
+                    'false'
+                )
+    </select>
+</mapper>
