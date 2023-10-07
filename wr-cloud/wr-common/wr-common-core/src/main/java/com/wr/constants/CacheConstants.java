@@ -3,7 +3,7 @@ package com.wr.constants;
 /**
  * 缓存常量信息
  *
- * @author wr
+ * @author mrz
  */
 public class CacheConstants
 {
@@ -38,9 +38,24 @@ public class CacheConstants
     public static final String CAPTCHA_CODE_KEY = "captcha_codes:";
 
     /**
+     * 登录 rsa秘钥
+     */
+    public static final String RSA_KEY = "rsa_key:";
+
+    /**
+     * 手机号验证码 redis key
+     */
+    public static final String PHONE_CODE_KEY = "phone_captcha_codes:";
+
+    /**
      * 参数管理 cache key
      */
     public static final String SYS_CONFIG_KEY = "sys_config:";
+
+    /**
+     * 微信小程序登录 cache key
+     */
+    public static final String WX_LET_LOGIN = "session_key:";
 
     /**
      * 字典管理 cache key
@@ -56,4 +71,5 @@ public class CacheConstants
      * 登录IP黑名单 cache key
      */
     public static final String SYS_LOGIN_BLACKIPLIST = SYS_CONFIG_KEY + "sys.login.blackIPList";
+
 }

@@ -88,6 +88,12 @@ public class HttpStatus
     public static final int NOT_IMPLEMENTED = 501;
 
     /**
+     * 秘钥失效
+     */
+    public static final int KEY_LOSE = 7001;
+
+
+    /**
      * 系统警告消息
      */
     public static final int WARN = 601;

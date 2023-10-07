@@ -16,6 +16,7 @@ import com.wr.mapper.SysRoleMenuMapper;
 import com.wr.mapper.SysUserMapper;
 import com.wr.service.ISysMenuService;
 import com.wr.utils.BeanUtil;
+import com.wr.utils.SecurityUtils;
 import com.wr.utils.StringUtils;
 import org.springframework.stereotype.Service;
 

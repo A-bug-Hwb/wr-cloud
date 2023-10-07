@@ -3,7 +3,7 @@ package com.wr.constants;
 /**
  * 通用常量信息
  *
- * @author wr
+ * @author mrz
  */
 public class Constants
 {
@@ -58,73 +58,24 @@ public class Constants
     public static final Integer FAIL = 500;
 
     /**
-     * 登录成功状态
-     */
-    public static final String LOGIN_SUCCESS_STATUS = "0";
-
-    /**
-     * 登录失败状态
-     */
-    public static final String LOGIN_FAIL_STATUS = "1";
-
-    /**
-     * 登录成功
-     */
-    public static final String LOGIN_SUCCESS = "Success";
-
-    /**
-     * 注销
-     */
-    public static final String LOGOUT = "Logout";
-
-    /**
-     * 注册
-     */
-    public static final String REGISTER = "Register";
-
-    /**
-     * 登录失败
-     */
-    public static final String LOGIN_FAIL = "Error";
-
-    /**
-     * 当前记录起始索引
-     */
-    public static final String PAGE_NUM = "pageNum";
-
-    /**
-     * 每页显示记录数
-     */
-    public static final String PAGE_SIZE = "pageSize";
-
-    /**
-     * 排序列
-     */
-    public static final String ORDER_BY_COLUMN = "orderByColumn";
-
-    /**
-     * 排序的方向 "desc" 或者 "asc".
-     */
-    public static final String IS_ASC = "isAsc";
-
-    /**
      * 验证码有效期（分钟）
      */
     public static final long CAPTCHA_EXPIRATION = 2;
 
     /**
-     * 资源映射路径 前缀
+     * 验证码有效期（分钟）
      */
-    public static final String RESOURCE_PREFIX = "/profile";
+    public static final long RSA_KEY_EXPIRATION = 5;
 
     /**
      * 定时任务白名单配置（仅允许访问的包名，如其他需要可以自行添加）
      */
-    public static final String[] JOB_WHITELIST_STR = { "com.wr" };
+    public static final String[] JOB_WHITELIST_STR = { "com.mrz" };
 
     /**
      * 定时任务违规的字符
      */
     public static final String[] JOB_ERROR_STR = { "java.net.URL", "javax.naming.InitialContext", "org.yaml.snakeyaml",
-            "org.springframework", "org.apache", "com.wr.common.core.utils.file" };
+            "org.springframework", "org.apache", "com.mrz.common.core.utils.file" };
+
 }

@@ -40,7 +40,7 @@
         <ali.core.version>4.5.16</ali.core.version>
         <ali.dysmsapi.version>1.1.0</ali.dysmsapi.version>
         <poi.version>1.12.1</poi.version>
-        <minio.version>8.2.1</minio.version>
+        <commons-codec.version>1.15</commons-codec.version>
     </properties>
     <dependencies>
         <!-- bootstrap 启动器 -->

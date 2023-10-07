@@ -21,6 +21,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -43,6 +45,33 @@ public class TokenController
 
     @Value("${config.captcha}")
     private String captchaType;
+
+    @ApiOperation("获取登录公钥")
+    @GetMapping("/getPublicKey")
+    public R getPublicKey() {
+        RSAUtil.KeyPairInfo keyPair = RSAUtil.getKeyPair();
+        String publicKey = keyPair.getPublicKey();
+        String privateKey = keyPair.getPrivateKey();
+        String rsaKeyId = IdUtils.fastSimpleUUID();
+        redisService.setCacheObject(CacheConstants.RSA_KEY+rsaKeyId,privateKey,Constants.RSA_KEY_EXPIRATION,TimeUnit.MINUTES);
+        Map<String,Object> map = new HashMap<>();
+        map.put("publicKey",publicKey);
+        map.put("rsaKeyId",rsaKeyId);
+        map.put("expires_in", Constants.RSA_KEY_EXPIRATION);
+        return R.ok(map);
+    }
+
+    @ApiOperation("使用加密登录")
+    @PostMapping("/loginKey")
+    public R loginKey(@RequestBody LoginUserDto loginUserDto) {
+        String privateKey = redisService.getCacheObject(CacheConstants.RSA_KEY+loginUserDto.getRsaKeyId());
+        String password = RSAUtil.decipher(loginUserDto.getPassword(),privateKey);
+        // 用户登录
+        LoginUser userInfo = sysLoginService.login(loginUserDto.getUserName(), password, loginUserDto.getCode(), loginUserDto.getUuid());
+        // 获取登录token
+        return R.ok(tokenService.createToken(userInfo));
+    }
+
 
     @ApiOperation("登录")
     @PostMapping("/login")
