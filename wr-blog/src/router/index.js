@@ -6,6 +6,10 @@ const router = createRouter({
   routes: [
     {
       path: '/',
+      redirect:'/index'
+    },
+    {
+      path: '/index',
       name: 'index',
       component: Index
     },
@@ -32,6 +36,14 @@ const router = createRouter({
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/Resume.vue')
+    },
+    {
+      path: '/mini-games',
+      name: 'mini-games',
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/MiniGames.vue')
     }
   ]
 })

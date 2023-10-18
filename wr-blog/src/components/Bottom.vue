@@ -3,13 +3,14 @@
 </script>
 
 <template>
-  <div class="bottom">
-  </div>
+  <div class="bottom"></div>
+  <div style="height: 100px"></div>
 </template>
 
 <style scoped>
 .bottom {
-  position: absolute;
+  z-index: 99;
+  position: fixed;
   bottom: 0;
   left: 0;
   width: 100vw;
