@@ -21,6 +21,16 @@ public class TableSupport
     public static final String PAGE_SIZE = "pageSize";
 
     /**
+     * 排序列
+     */
+    public static final String ORDER_BY_COLUMN = "orderByColumn";
+
+    /**
+     * 排序的方向 "desc" 或者 "asc".
+     */
+    public static final String IS_ASC = "isAsc";
+
+    /**
      * 分页参数合理化
      */
     public static final String REASONABLE = "reasonable";
@@ -33,6 +43,8 @@ public class TableSupport
         PageDomain pageDomain = new PageDomain();
         pageDomain.setPageNum(Convert.toInt(ServletUtils.getParameter(PAGE_NUM), 1));
         pageDomain.setPageSize(Convert.toInt(ServletUtils.getParameter(PAGE_SIZE), 10));
+        pageDomain.setOrderByColumn(ServletUtils.getParameter(ORDER_BY_COLUMN));
+        pageDomain.setIsAsc(ServletUtils.getParameter(IS_ASC));
         pageDomain.setReasonable(ServletUtils.getParameterToBool(REASONABLE));
         return pageDomain;
     }

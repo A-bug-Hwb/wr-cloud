@@ -10,8 +10,8 @@ import com.wr.mapper.SysRoleMapper;
 import com.wr.service.ISysRoleMenuService;
 import com.wr.service.ISysRoleService;
 import com.wr.service.ISysUserRoleService;
-import com.wr.utils.BeanUtil;
 import com.wr.utils.StringUtils;
+import com.wr.utils.bean.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -61,7 +61,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRolePo> im
 
     @Override
     public List<SysRoleVo> getRoleList(SysRoleDto sysRoleDto) {
-        return sysRoleMapper.getRoleList(BeanUtil.beanToBean(sysRoleDto,new SysRolePo()));
+        return sysRoleMapper.getRoleList(BeanUtils.copyDataProp(sysRoleDto,new SysRolePo()));
     }
 
     @Override
@@ -100,7 +100,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRolePo> im
 
     @Override
     public boolean insertRole(AddSysRoleDto addSysRoleDto) {
-        SysRolePo sysRolePo = BeanUtil.beanToBean(addSysRoleDto,new SysRolePo());
+        SysRolePo sysRolePo = BeanUtils.copyDataProp(addSysRoleDto,new SysRolePo());
         sysRolePo.setCreateTime(new Date());
         if (sysRoleMapper.insert(sysRolePo) > 0){
             for (Long menuId:addSysRoleDto.getMenuIds()){
@@ -116,7 +116,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRolePo> im
 
     @Override
     public boolean updateRole(UpSysRoleDto upSysRoleDto) {
-        SysRolePo sysRolePo = BeanUtil.beanToBean(upSysRoleDto,new SysRolePo());
+        SysRolePo sysRolePo = BeanUtils.copyDataProp(upSysRoleDto,new SysRolePo());
         sysRolePo.setUpdateTime(new Date());
         if (sysRoleMapper.updateById(sysRolePo) > 0 ){
             //先删除全部

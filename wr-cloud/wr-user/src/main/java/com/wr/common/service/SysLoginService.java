@@ -12,9 +12,9 @@ import com.wr.service.ISysPermissionService;
 import com.wr.service.ISysUserService;
 import com.wr.service.RedisService;
 import com.wr.text.Convert;
-import com.wr.utils.IpUtils;
 import com.wr.utils.SecurityUtils;
 import com.wr.utils.StringUtils;
+import com.wr.utils.ip.IpUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -59,18 +59,6 @@ public class SysLoginService
         if (StringUtils.isAnyBlank(username, password))
         {
             throw new ServiceException("用户/密码必须填写");
-        }
-        // 密码如果不在指定范围内 错误
-        if (password.length() < UserConstants.PASSWORD_MIN_LENGTH
-                || password.length() > UserConstants.PASSWORD_MAX_LENGTH)
-        {
-            throw new ServiceException("用户密码不在指定范围");
-        }
-        // 用户名不在指定范围内 错误
-        if (username.length() < UserConstants.USERNAME_MIN_LENGTH
-                || username.length() > UserConstants.USERNAME_MAX_LENGTH)
-        {
-            throw new ServiceException("用户名不在指定范围");
         }
         // IP黑名单校验
         String blackStr = Convert.toStr(redisService.getCacheObject(CacheConstants.SYS_LOGIN_BLACKIPLIST));

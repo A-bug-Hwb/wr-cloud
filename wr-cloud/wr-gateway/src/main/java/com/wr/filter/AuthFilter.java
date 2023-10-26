@@ -1,10 +1,10 @@
 package com.wr.filter;
 
+import com.wr.config.properties.IgnoreWhiteProperties;
 import com.wr.constants.CacheConstants;
 import com.wr.constants.HttpStatus;
 import com.wr.constants.SecurityConstants;
 import com.wr.constants.TokenConstants;
-import com.wr.properties.IgnoreWhiteProperties;
 import com.wr.service.RedisService;
 import com.wr.utils.JwtUtils;
 import com.wr.utils.ServletUtils;
@@ -79,9 +79,6 @@ public class AuthFilter implements GlobalFilter, Ordered
         addHeader(mutate, SecurityConstants.DETAILS_USERNAME, username);
         // 内部请求来源参数清除
         removeHeader(mutate, SecurityConstants.FROM_SOURCE);
-
-
-
 
         return chain.filter(exchange.mutate().request(mutate.build()).build());
     }

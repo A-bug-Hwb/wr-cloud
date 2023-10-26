@@ -1,5 +1,7 @@
 package com.wr.web.page;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -8,7 +10,8 @@ import java.util.List;
  *
  * @author wr
  */
-public class TableDataInfo implements Serializable
+@Data
+public class TableDataInfo<T> implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
@@ -16,19 +19,13 @@ public class TableDataInfo implements Serializable
     private long total;
 
     /** 列表数据 */
-    private List<?> rows;
+    private List<T> rows;
 
     /** 消息状态码 */
     private int code;
 
     /** 消息内容 */
     private String msg;
-
-    private String pages;
-
-    private String size;
-
-    private String current;
 
     /**
      * 表格数据对象
@@ -43,75 +40,9 @@ public class TableDataInfo implements Serializable
      * @param list 列表数据
      * @param total 总记录数
      */
-    public TableDataInfo(List<?> list, int total)
+    public TableDataInfo(List<T> list, int total)
     {
         this.rows = list;
         this.total = total;
-    }
-
-    public String getSize() {
-        return size;
-    }
-
-    public void setSize(String size) {
-        this.size = size;
-    }
-
-    public String getCurrent() {
-        return current;
-    }
-
-    public void setCurrent(String current) {
-        this.current = current;
-    }
-
-    public long getTotal()
-    {
-        return total;
-    }
-
-    public void setTotal(long total)
-    {
-        this.total = total;
-    }
-
-    public List<?> getRows()
-    {
-        return rows;
-    }
-
-    public void setRows(List<?> rows)
-    {
-        this.rows = rows;
-    }
-
-    public int getCode()
-    {
-        return code;
-    }
-
-    public void setCode(int code)
-    {
-        this.code = code;
-    }
-
-    public String getMsg()
-    {
-        return msg;
-    }
-
-    public void setMsg(String msg)
-    {
-        this.msg = msg;
-    }
-
-    public String getPages()
-    {
-        return pages;
-    }
-
-    public void setPages(String pages)
-    {
-        this.pages = pages;
     }
 }

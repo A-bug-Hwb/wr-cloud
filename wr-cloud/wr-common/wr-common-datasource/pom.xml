@@ -21,6 +21,7 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql.version}</version>
         </dependency>
+
         <!-- Druid -->
         <dependency>
             <groupId>com.alibaba</groupId>
@@ -33,13 +34,6 @@
             <groupId>com.baomidou</groupId>
             <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
             <version>${dynamic-ds.version}</version>
-        </dependency>
-
-        <!--MyBatis Plus-->
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>${mybatis-plus.version}</version>
         </dependency>
 
 

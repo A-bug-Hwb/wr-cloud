@@ -10,7 +10,6 @@ import java.util.Map;
 @Data
 public class BaseEntityDto implements Serializable {
 
-
     /** 请求参数 */
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, Object> params;

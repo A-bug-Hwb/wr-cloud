@@ -1,9 +1,8 @@
 package com.wr.controller;
 
 import com.wr.common.service.PhoneService;
-import com.wr.exception.ServiceException;
-import com.wr.result.AjaxResult;
 import com.wr.result.R;
+import com.wr.utils.format.FormatUtils;
 import com.wr.web.controller.BaseController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -23,15 +22,19 @@ public class PhoneController extends BaseController {
 
     @GetMapping("/login")
     @ApiOperation("短信验证码登录")
-    public R getCode(@RequestParam String phone,@RequestParam String key,@RequestParam String code){
-        isPhone(phone);
-        return phoneService.logReg(phone,key,code);
+    public R getCode(@RequestParam String mobile,@RequestParam String key,@RequestParam String code){
+        if (!FormatUtils.isMobile(mobile)){
+            return R.fail("手机号格式不正确");
+        }
+        return phoneService.logReg(mobile,key,code);
     }
 
     @GetMapping("/getCode")
     @ApiOperation("获取短信验证码")
-    public R getCode(@RequestParam String phoneNumbers){
-        isPhone(phoneNumbers);
-        return phoneService.getCode(phoneNumbers);
+    public R getCode(@RequestParam String mobile){
+        if (!FormatUtils.isMobile(mobile)){
+            return R.fail("手机号格式不正确");
+        }
+        return phoneService.getCode(mobile);
     }
 }

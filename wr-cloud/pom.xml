@@ -33,14 +33,12 @@
         <easy-captcha.version>1.6.2</easy-captcha.version>
         <spring-el.version>5.3.14</spring-el.version>
         <bitwalker.version>1.21</bitwalker.version>
-        <aop.version>3.1.0</aop.version>
         <hutool.version>5.8.19</hutool.version>
         <commons.io.version>2.11.0</commons.io.version>
         <transmittable-thread-local.version>2.14.3</transmittable-thread-local.version>
         <ali.core.version>4.5.16</ali.core.version>
         <ali.dysmsapi.version>1.1.0</ali.dysmsapi.version>
-        <poi.version>1.12.1</poi.version>
-        <commons-codec.version>1.15</commons-codec.version>
+        <poi.version>4.1.2</poi.version>
     </properties>
     <dependencies>
         <!-- bootstrap 启动器 -->
@@ -97,6 +95,7 @@
                 <artifactId>UserAgentUtils</artifactId>
                 <version>${bitwalker.version}</version>
             </dependency>
+
             <!-- JWT -->
             <dependency>
                 <groupId>io.jsonwebtoken</groupId>
@@ -127,19 +126,6 @@
                 <optional>true</optional>
             </dependency>
 
-            <!-- 解析客户端操作系统、浏览器等 -->
-            <dependency>
-                <groupId>eu.bitwalker</groupId>
-                <artifactId>UserAgentUtils</artifactId>
-                <version>${bitwalker.version}</version>
-            </dependency>
-
-            <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-aop -->
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-aop</artifactId>
-                <version>${aop.version}</version>
-            </dependency>
 
             <dependency>
                 <groupId>cn.hutool</groupId>
@@ -171,12 +157,19 @@
             <dependency>
                 <groupId>com.aliyun</groupId>
                 <artifactId>aliyun-java-sdk-core</artifactId>
-                <version>4.5.16</version>
+                <version>${ali.core.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.aliyun</groupId>
                 <artifactId>aliyun-java-sdk-dysmsapi</artifactId>
-                <version>1.1.0</version>
+                <version>${ali.dysmsapi.version}</version>
+            </dependency>
+
+            <!-- excel工具 -->
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>${poi.version}</version>
             </dependency>
 
 

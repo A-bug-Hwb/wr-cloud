@@ -4,6 +4,8 @@ import com.wr.constants.CacheConstants;
 import com.wr.constants.SecurityConstants;
 import com.wr.domain.LoginPojo.LoginUser;
 import com.wr.utils.*;
+import com.wr.utils.ip.IpUtils;
+import com.wr.utils.uuid.IdUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

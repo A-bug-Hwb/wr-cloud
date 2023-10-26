@@ -1,4 +1,4 @@
-package com.wr.utils;
+package com.wr.utils.encrypt;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

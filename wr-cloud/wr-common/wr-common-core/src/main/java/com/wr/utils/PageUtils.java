@@ -1,6 +1,7 @@
 package com.wr.utils;
 
 import com.github.pagehelper.PageHelper;
+import com.wr.utils.sql.SqlUtil;
 import com.wr.web.page.PageDomain;
 import com.wr.web.page.TableSupport;
 
@@ -19,8 +20,9 @@ public class PageUtils extends PageHelper
         PageDomain pageDomain = TableSupport.buildPageRequest();
         Integer pageNum = pageDomain.getPageNum();
         Integer pageSize = pageDomain.getPageSize();
+        String orderBy = SqlUtil.escapeOrderBySql(pageDomain.getOrderBy());
         Boolean reasonable = pageDomain.getReasonable();
-        PageHelper.startPage(pageNum, pageSize).setReasonable(reasonable);
+        PageHelper.startPage(pageNum, pageSize,orderBy).setReasonable(reasonable);
     }
 
     /**

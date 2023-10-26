@@ -1,4 +1,4 @@
-package com.wr.utils;
+package com.wr.utils.uuid;
 
 public enum SnowflakeIdWorker {
 

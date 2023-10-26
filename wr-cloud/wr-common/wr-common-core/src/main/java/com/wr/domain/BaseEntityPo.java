@@ -16,10 +16,6 @@ public class BaseEntityPo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-//    /** 搜索值 */
-//    @JsonIgnore
-//    private String searchValue;
-
     /** 创建者 */
     private String createBy;
 

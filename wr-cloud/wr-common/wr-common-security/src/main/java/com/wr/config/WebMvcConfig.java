@@ -8,8 +8,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 /**
  * 拦截器配置
  *
- * @author ruoyi
+ * @author wr
  */
+@Configuration
 public class WebMvcConfig implements WebMvcConfigurer
 {
     /** 不需要拦截地址 */

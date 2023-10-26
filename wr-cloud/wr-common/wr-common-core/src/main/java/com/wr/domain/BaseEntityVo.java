@@ -1,7 +1,6 @@
 package com.wr.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
@@ -13,10 +12,6 @@ import java.util.Map;
 @Data
 public class BaseEntityVo implements Serializable {
     private static final long serialVersionUID = 1L;
-
-//    /** 搜索值 */
-//    @JsonIgnore
-//    private String searchValue;
 
 
     /** 创建时间 */

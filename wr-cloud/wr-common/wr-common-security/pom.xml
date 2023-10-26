@@ -22,6 +22,7 @@
             <groupId>com.wr</groupId>
             <artifactId>wr-common-redis</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>

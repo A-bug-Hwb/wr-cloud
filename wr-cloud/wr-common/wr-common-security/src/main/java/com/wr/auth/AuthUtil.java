@@ -8,7 +8,7 @@ import com.wr.domain.LoginPojo.LoginUser;
 /**
  * Token 权限验证工具类
  * 
- * @author ruoyi
+ * @author wr
  */
 public class AuthUtil
 {

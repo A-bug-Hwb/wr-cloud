@@ -4,17 +4,19 @@ import com.wr.domain.SysMenuPojo.AddSysMenuDto;
 import com.wr.domain.SysMenuPojo.SysMenuDto;
 import com.wr.domain.SysMenuPojo.SysMenuVo;
 import com.wr.domain.SysMenuPojo.UpSysMenuDto;
-import com.wr.result.AjaxResult;
+import com.wr.result.R;
 import com.wr.service.ISysMenuService;
-import com.wr.utils.BeanUtil;
 import com.wr.utils.SecurityUtils;
+import com.wr.utils.bean.BeanUtils;
 import com.wr.web.controller.BaseController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Api(tags = "菜单管理")
 @RestController
@@ -26,54 +28,54 @@ public class SysMenuController extends BaseController {
 
     @ApiOperation("获取菜单路由信息")
     @GetMapping("/getRouters")
-    public AjaxResult getRouters()
+    public R getRouters()
     {
         List<SysMenuVo> menus = iSysMenuService.selectMenuTreeByUserId(SecurityUtils.getUserId());
-        return success(iSysMenuService.buildMenus(menus));
+        return R.ok(iSysMenuService.buildMenus(menus));
     }
 
     @ApiOperation("获取菜单列表")
     @GetMapping("/list")
-    public AjaxResult list(SysMenuDto sysMenuDto)
+    public R list(SysMenuDto sysMenuDto)
     {
-        return success(iSysMenuService.selectMenuList(sysMenuDto, SecurityUtils.getUserId()));
+        return R.ok(iSysMenuService.selectMenuList(sysMenuDto, SecurityUtils.getUserId()));
     }
 
     @ApiOperation("菜单添加")
     @PostMapping("/add")
-    public AjaxResult add(@RequestBody AddSysMenuDto addSysMenuDto)
+    public R add(@RequestBody AddSysMenuDto addSysMenuDto)
     {
         if (iSysMenuService.install(addSysMenuDto)){
-            return success("添加成功");
+            return R.ok("添加成功");
         }
-        return error("添加失败");
+        return R.fail("添加失败");
     }
 
     @ApiOperation("根据菜单id获取菜单详情")
     @GetMapping("/{menuId}")
-    public AjaxResult getInfo(@PathVariable Long menuId)
+    public R getInfo(@PathVariable Long menuId)
     {
-        return success(BeanUtil.beanToBean(iSysMenuService.getById(menuId),new SysMenuVo()));
+        return R.ok(BeanUtils.copyDataProp(iSysMenuService.getById(menuId),new SysMenuVo()));
     }
 
     @ApiOperation("菜单修改")
     @PutMapping("/edit")
-    public AjaxResult edit(@RequestBody UpSysMenuDto upSysMenuDto)
+    public R edit(@RequestBody UpSysMenuDto upSysMenuDto)
     {
         if (iSysMenuService.update(upSysMenuDto)){
-            return success("修改成功");
+            return R.ok("修改成功");
         }
-        return error("修改失败");
+        return R.fail("修改失败");
     }
 
     @ApiOperation("菜单删除")
     @DeleteMapping("/delete/{menuId}")
-    public AjaxResult delete(@PathVariable Long menuId)
+    public R delete(@PathVariable Long menuId)
     {
         if (iSysMenuService.deleteMenu(menuId)){
-            return success("删除成功");
+            return R.ok("删除成功");
         }
-        return error("当前菜单下有子菜单，不允许删除");
+        return R.fail("当前菜单下有子菜单，不允许删除");
     }
 
     /**
@@ -81,20 +83,20 @@ public class SysMenuController extends BaseController {
      */
     @ApiOperation("获取菜单下拉树列表")
     @GetMapping("/treeselect")
-    public AjaxResult treeselect(SysMenuDto sysMenuDto)
+    public R treeselect(SysMenuDto sysMenuDto)
     {
         List<SysMenuVo> menus = iSysMenuService.selectMenuList(sysMenuDto, SecurityUtils.getUserId());
-        return success(iSysMenuService.buildMenuTreeSelect(menus));
+        return R.ok(iSysMenuService.buildMenuTreeSelect(menus));
     }
 
     @ApiOperation("根据角色ID查询菜单下拉树结构")
     @GetMapping("/roleMenuTreeselect/{roleId}")
-    public AjaxResult roleMenuTreeselect(@PathVariable Long roleId)
+    public R roleMenuTreeselect(@PathVariable Long roleId)
     {
         List<SysMenuVo> menus = iSysMenuService.selectMenuList(new SysMenuDto(),SecurityUtils.getUserId());
-        AjaxResult ajax = AjaxResult.success();
-        ajax.put("checkedKeys", iSysMenuService.selectMenuListByRoleId(roleId));
-        ajax.put("menus", iSysMenuService.buildMenuTreeSelect(menus));
-        return ajax;
+        Map<String, Object> map = new HashMap<>(2);
+        map.put("checkedKeys", iSysMenuService.selectMenuListByRoleId(roleId));
+        map.put("menus", iSysMenuService.buildMenuTreeSelect(menus));
+        return R.ok(map);
     }
 }

@@ -7,13 +7,15 @@ import com.wr.constants.Constants;
 import com.wr.domain.LoginPojo.LoginUser;
 import com.wr.domain.LoginPojo.LoginUserDto;
 import com.wr.domain.LoginPojo.RegisterUser;
-import com.wr.result.AjaxResult;
+import com.wr.result.R;
 import com.wr.result.R;
 import com.wr.service.RedisService;
 import com.wr.service.TokenService;
 import com.wr.utils.*;
 import com.wf.captcha.ArithmeticCaptcha;
 import com.wf.captcha.SpecCaptcha;
+import com.wr.utils.encrypt.RSAUtil;
+import com.wr.utils.uuid.IdUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -127,29 +129,28 @@ public class TokenController
 
     @ApiOperation("登录验证码")
     @GetMapping("/captchaImage")
-    public AjaxResult getCode()
+    public R getCode()
     {
-        AjaxResult ajax = AjaxResult.success();
-
+        Map<String, Object> map = new HashMap<>(2);
         // 保存验证码信息
         String uuid = IdUtils.simpleUUID();
         String verifyKey = CacheConstants.CAPTCHA_CODE_KEY + uuid;
         String code = null;
-        ajax.put("uuid", uuid);
+        map.put("uuid", uuid);
         // 生成验证码
         if ("math".equals(captchaType))
         {
             ArithmeticCaptcha captcha = new ArithmeticCaptcha(111, 36, 2);
             code = captcha.text();
-            ajax.put("img", captcha.toBase64());
+            map.put("img", captcha.toBase64());
         }
         else if ("char".equals(captchaType))
         {
             SpecCaptcha captcha = new SpecCaptcha(111, 36, 4);
             code = captcha.text();
-            ajax.put("img", captcha.toBase64());
+            map.put("img", captcha.toBase64());
         }
         redisService.setCacheObject(verifyKey, code, Constants.CAPTCHA_EXPIRATION, TimeUnit.MINUTES);
-        return ajax;
+        return R.ok(map);
     }
 }

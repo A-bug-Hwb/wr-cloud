@@ -15,9 +15,9 @@ import com.wr.mapper.SysRoleMapper;
 import com.wr.mapper.SysRoleMenuMapper;
 import com.wr.mapper.SysUserMapper;
 import com.wr.service.ISysMenuService;
-import com.wr.utils.BeanUtil;
 import com.wr.utils.SecurityUtils;
 import com.wr.utils.StringUtils;
+import com.wr.utils.bean.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -114,7 +114,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenuPo> im
     @Override
     public List<SysMenuVo> selectMenuList(SysMenuDto sysMenuDto, Long userId) {
         List<SysMenuVo> menuList = new ArrayList<>();
-        SysMenuPo sysMenuPo = BeanUtil.beanToBean(sysMenuDto,new SysMenuPo());
+        SysMenuPo sysMenuPo = BeanUtils.copyDataProp(sysMenuDto,new SysMenuPo());
         if (sysUserMapper.isAdmin(userId)){
             menuList = sysMenuMapper.selectMenuList(sysMenuPo);
         }else {
@@ -126,7 +126,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenuPo> im
 
     @Override
     public boolean install(AddSysMenuDto addSysMenuDto) {
-        SysMenuPo sysMenuPo = BeanUtil.beanToBean(addSysMenuDto,new SysMenuPo());
+        SysMenuPo sysMenuPo = BeanUtils.copyDataProp(addSysMenuDto,new SysMenuPo());
         sysMenuPo.setCreateBy(SecurityUtils.getUsername());
         sysMenuPo.setCreateTime(new Date());
         if (sysMenuMapper.insert(sysMenuPo) > 0){
@@ -137,7 +137,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenuPo> im
 
     @Override
     public boolean update(UpSysMenuDto upSysMenuDto) {
-        SysMenuPo sysMenuPo = BeanUtil.beanToBean(upSysMenuDto,new SysMenuPo());
+        SysMenuPo sysMenuPo = BeanUtils.copyDataProp(upSysMenuDto,new SysMenuPo());
         sysMenuPo.setUpdateBy(SecurityUtils.getUsername());
         sysMenuPo.setUpdateTime(new Date());
         if (sysMenuMapper.updateById(sysMenuPo) > 0){

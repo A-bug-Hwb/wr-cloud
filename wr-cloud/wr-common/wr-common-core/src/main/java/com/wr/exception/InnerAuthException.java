@@ -3,7 +3,7 @@ package com.wr.exception;
 /**
  * 内部认证异常
  * 
- * @author ruoyi
+ * @author wr
  */
 public class InnerAuthException extends RuntimeException
 {

@@ -5,6 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
+/**
+ * @author 郝文彬
+ */
 @EnableDiscoveryClient
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 public class WrGateWayApplication {

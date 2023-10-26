@@ -3,7 +3,7 @@ package com.wr.annotation;
 /**
  * 权限注解的验证模式
  * 
- * @author ruoyi
+ * @author wr
  *
  */
 public enum Logical

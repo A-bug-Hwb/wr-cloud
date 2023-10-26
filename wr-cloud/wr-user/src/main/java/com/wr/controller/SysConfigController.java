@@ -3,7 +3,7 @@ package com.wr.controller;
 import com.wr.domain.SysConfigPojo.AddSysConfigDto;
 import com.wr.domain.SysConfigPojo.SysConfigDto;
 import com.wr.domain.SysConfigPojo.UpSysConfigDto;
-import com.wr.result.AjaxResult;
+import com.wr.result.R;
 import com.wr.service.ISysConfigService;
 import com.wr.web.controller.BaseController;
 import com.wr.web.page.TableDataInfo;
@@ -31,35 +31,35 @@ public class SysConfigController extends BaseController {
 
     @ApiOperation("获取系统参数详情")
     @GetMapping("/{configId}")
-    public AjaxResult add(@PathVariable Long configId){
-        return success(iSysConfigService.selectConfigById(configId));
+    public R getInfo(@PathVariable Long configId){
+        return R.ok(iSysConfigService.selectConfigById(configId));
     }
 
     @ApiOperation("根据参数键名查询参数值")
     @GetMapping("/configKey/{configKey}")
-    public AjaxResult configKey(@PathVariable String configKey){
-        return success(iSysConfigService.selectConfigByKey(configKey));
+    public R configKey(@PathVariable String configKey){
+        return R.ok(iSysConfigService.selectConfigByKey(configKey));
     }
 
     @ApiOperation("添加系统参数")
     @PostMapping("/add")
-    public AjaxResult add(@RequestBody AddSysConfigDto addSysConfigDto){
+    public R add(@RequestBody AddSysConfigDto addSysConfigDto){
         if (iSysConfigService.install(addSysConfigDto)){
-            return success("添加成功");
+            return R.ok("添加成功");
         }
-        return error("添加失败");
+        return R.fail("添加失败");
     }
 
     @ApiOperation("修改系统参数")
     @PutMapping("/update")
-    public AjaxResult update(@RequestBody UpSysConfigDto upSysConfigDto){
-        return success(iSysConfigService.updateInfo(upSysConfigDto));
+    public R update(@RequestBody UpSysConfigDto upSysConfigDto){
+        return R.ok(iSysConfigService.updateInfo(upSysConfigDto));
     }
 
     @ApiOperation("删除系统参数")
     @DeleteMapping("/{configId}")
-    public AjaxResult delete(@PathVariable List<Long> configId){
-        return success(iSysConfigService.removeByIds(configId));
+    public R delete(@PathVariable List<Long> configId){
+        return R.ok(iSysConfigService.removeByIds(configId));
     }
 
     /**
@@ -67,9 +67,9 @@ public class SysConfigController extends BaseController {
      */
     @ApiOperation("刷新参数缓存")
     @GetMapping("/refreshCache")
-    public AjaxResult refreshCache()
+    public R refreshCache()
     {
         iSysConfigService.resetConfigCache();
-        return success();
+        return R.ok();
     }
 }

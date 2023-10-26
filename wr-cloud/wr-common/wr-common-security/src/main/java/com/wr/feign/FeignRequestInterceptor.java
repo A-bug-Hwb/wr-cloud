@@ -2,9 +2,9 @@ package com.wr.feign;
 
 
 import com.wr.constants.SecurityConstants;
-import com.wr.utils.IpUtils;
 import com.wr.utils.ServletUtils;
 import com.wr.utils.StringUtils;
+import com.wr.utils.ip.IpUtils;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import org.springframework.stereotype.Component;
@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * feign 请求拦截器
  * 
- * @author ruoyi
+ * @author wr
  */
 @Component
 public class FeignRequestInterceptor implements RequestInterceptor

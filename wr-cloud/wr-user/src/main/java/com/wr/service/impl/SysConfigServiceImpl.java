@@ -7,9 +7,9 @@ import com.wr.domain.SysConfigPojo.*;
 import com.wr.mapper.SysConfigMapper;
 import com.wr.service.ISysConfigService;
 import com.wr.service.RedisService;
-import com.wr.utils.BeanUtil;
 import com.wr.utils.SecurityUtils;
 import com.wr.utils.StringUtils;
+import com.wr.utils.bean.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +34,7 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
 
     @Override
     public SysConfigVo selectConfigById(Long configId) {
-        return BeanUtil.beanToBean(sysConfigMapper.selectById(configId), new SysConfigVo());
+        return BeanUtils.copyDataProp(sysConfigMapper.selectById(configId), new SysConfigVo());
     }
 
     @Override
@@ -53,7 +53,7 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
 
     @Override
     public boolean install(AddSysConfigDto addSysConfigDto) {
-        SysConfigPo sysConfigPo = BeanUtil.beanToBean(addSysConfigDto, new SysConfigPo());
+        SysConfigPo sysConfigPo = BeanUtils.copyDataProp(addSysConfigDto, new SysConfigPo());
         sysConfigPo.setCreateBy(SecurityUtils.getUsername());
         sysConfigPo.setCreateTime(new Date());
         if (sysConfigMapper.insert(sysConfigPo) > 0) {
@@ -64,7 +64,7 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
 
     @Override
     public boolean updateInfo(UpSysConfigDto upSysConfigDto) {
-        SysConfigPo sysConfigPo = BeanUtil.beanToBean(upSysConfigDto, new SysConfigPo());
+        SysConfigPo sysConfigPo = BeanUtils.copyDataProp(upSysConfigDto, new SysConfigPo());
         sysConfigPo.setUpdateBy(SecurityUtils.getUsername());
         sysConfigPo.setUpdateTime(new Date());
         if (sysConfigMapper.updateById(sysConfigPo) > 0) {

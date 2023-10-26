@@ -11,16 +11,18 @@ spring:
     active: dev
   cloud:
     nacos:
-      server-addr: 192.168.16.211:8848 #nacos服务地址
+      username: nacos
+      password: wenbin129
+      server-addr: 47.97.8.157:8848 #nacos服务地址
       discovery:
-        namespace: 2607614d-309f-4312-981b-28fddbe46864
+        namespace: 2f33af11-b55d-4df6-85e1-48f332086e25
       config:
-        namespace: 2607614d-309f-4312-981b-28fddbe46864
+        namespace: 2f33af11-b55d-4df6-85e1-48f332086e25
         # 配置文件格式
         file-extension: yaml
         # 共享配置
         shared-configs:
-          - data-id: application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+          - data-id: wr-application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
             group: DEFAULT_GROUP
-          - data-id: datasource-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+          - data-id: wr-datasource-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
             group: DEFAULT_GROUP

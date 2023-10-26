@@ -8,7 +8,7 @@ import java.lang.annotation.*;
  * 自定义feign注解
  * 添加basePackages路径
  * 
- * @author ruoyi
+ * @author wr
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
@@ -18,7 +18,7 @@ public @interface EnableRyFeignClients
 {
     String[] value() default {};
 
-    String[] basePackages() default { "com.ruoyi" };
+    String[] basePackages() default { "com.wr" };
 
     Class<?>[] basePackageClasses() default {};
 

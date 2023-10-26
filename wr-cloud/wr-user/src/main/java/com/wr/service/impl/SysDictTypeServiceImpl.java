@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wr.domain.SysDictPojo.SysDictTypePojo.*;
 import com.wr.mapper.SysDictTypeMapper;
 import com.wr.service.ISysDictTypeService;
-import com.wr.utils.BeanUtil;
+import com.wr.utils.bean.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -21,18 +21,18 @@ public class SysDictTypeServiceImpl extends ServiceImpl<SysDictTypeMapper, SysDi
 
     @Override
     public List<SysDictTypeVo> getDictTypeList(SysDictTypeDto sysDictTypeDto) {
-        return sysDictTypeMapper.getDictTypeList(BeanUtil.beanToBean(sysDictTypeDto,new SysDictTypePo()));
+        return sysDictTypeMapper.getDictTypeList(BeanUtils.copyDataProp(sysDictTypeDto,new SysDictTypePo()));
     }
 
     @Override
     public SysDictTypeVo getDictTypeInfo(Long dictId) {
         SysDictTypePo sysDictTypePo = sysDictTypeMapper.selectOne(Wrappers.lambdaQuery(SysDictTypePo.class).eq(SysDictTypePo::getDictId,dictId).last("limit 1"));
-        return BeanUtil.beanToBean(sysDictTypePo,new SysDictTypeVo());
+        return BeanUtils.copyDataProp(sysDictTypePo,new SysDictTypeVo());
     }
 
     @Override
     public boolean addType(AddDictTypeDto addDictTypeDto) {
-        SysDictTypePo sysDictTypePo = BeanUtil.beanToBean(addDictTypeDto,new SysDictTypePo());
+        SysDictTypePo sysDictTypePo = BeanUtils.copyDataProp(addDictTypeDto,new SysDictTypePo());
         sysDictTypePo.setCreateTime(new Date());
         if (sysDictTypeMapper.insert(sysDictTypePo) > 0){
             return true;
@@ -42,7 +42,7 @@ public class SysDictTypeServiceImpl extends ServiceImpl<SysDictTypeMapper, SysDi
 
     @Override
     public boolean updateType(UpDictTypeDto upDictTypeDto) {
-        SysDictTypePo sysDictTypePo = BeanUtil.beanToBean(upDictTypeDto,new SysDictTypePo());
+        SysDictTypePo sysDictTypePo = BeanUtils.copyDataProp(upDictTypeDto,new SysDictTypePo());
         sysDictTypePo.setUpdateTime(new Date());
         if (sysDictTypeMapper.updateById(sysDictTypePo) > 0){
             return true;

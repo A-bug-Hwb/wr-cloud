@@ -7,7 +7,6 @@ import com.wr.domain.LoginPojo.RegisterUser;
 import com.wr.domain.LoginPojo.SysRoleBo;
 import com.wr.domain.LoginPojo.SysUserBo;
 import com.wr.domain.SysUserPojo.UserBasicInfoPojo.UserBasicInfoPo;
-import com.wr.exception.ServiceException;
 import com.wr.domain.SysRolePojo.SysRolePo;
 import com.wr.domain.SysUserPojo.*;
 import com.wr.domain.SysUserRolePojo.SysUserRolePo;
@@ -16,10 +15,10 @@ import com.wr.service.ISysRoleService;
 import com.wr.service.ISysUserRoleService;
 import com.wr.service.ISysUserService;
 import com.wr.service.IUserBasicInfoService;
-import com.wr.utils.BeanUtil;
-import com.wr.utils.IdUtils;
 import com.wr.utils.SecurityUtils;
 import com.wr.utils.StringUtils;
+import com.wr.utils.bean.BeanUtils;
+import com.wr.utils.uuid.IdUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -57,7 +56,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserPo> im
                 List<SysRoleBo> sysRoleBos = new ArrayList<>();
                 List<SysRolePo> rolePos = iSysRoleService.list(Wrappers.lambdaQuery(SysRolePo.class).in(SysRolePo::getRoleId, roleIds));
                 for (SysRolePo rolePo : rolePos) {
-                    SysRoleBo sysRoleBo = BeanUtil.beanToBean(rolePo, new SysRoleBo());
+                    SysRoleBo sysRoleBo = BeanUtils.copyDataProp(rolePo, new SysRoleBo());
                     sysRoleBos.add(sysRoleBo);
                 }
                 userBo.setSysRoleBos(sysRoleBos);
@@ -68,12 +67,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserPo> im
 
     @Override
     public Long registerUser(RegisterUser user, Long registerType) {
-        SysUserPo userPo = BeanUtil.beanToBean(user, new SysUserPo());
+        SysUserPo userPo = BeanUtils.copyDataProp(user, new SysUserPo());
         userPo.setUserName(user.getUsername());
         userPo.setUserId(Long.valueOf(IdUtils.getUUID()));
         userPo.setStatus("0");
         if (sysUserMapper.insert(userPo) > 0) {
-            UserBasicInfoPo userBasicInfoPo = BeanUtil.beanToBean(user, new UserBasicInfoPo());
+            UserBasicInfoPo userBasicInfoPo = BeanUtils.copyDataProp(user, new UserBasicInfoPo());
             userBasicInfoPo.setUserId(userPo.getUserId());
             userBasicInfoPo.setRegisterType(registerType);
             System.out.println(userBasicInfoPo);
@@ -95,7 +94,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserPo> im
 
     @Override
     public boolean install(AddSysUserDto addSysUserDto) {
-        SysUserPo sysUserPo = BeanUtil.beanToBean(addSysUserDto, new SysUserPo());
+        SysUserPo sysUserPo = BeanUtils.copyDataProp(addSysUserDto, new SysUserPo());
         sysUserPo.setUserId(Long.valueOf(IdUtils.getUUID()));
         sysUserPo.setPassword(SecurityUtils.encryptPassword(sysUserPo.getPassword()));
         if (sysUserMapper.insert(sysUserPo) > 0) {
@@ -110,17 +109,17 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserPo> im
 
     @Override
     public boolean updateUserInfo(UpSysUserDto upSysUserDto) {
-        SysUserPo sysUserPo = BeanUtil.beanToBean(upSysUserDto, new SysUserPo());
+        SysUserPo sysUserPo = BeanUtils.copyDataProp(upSysUserDto, new SysUserPo());
         if (sysUserMapper.updateById(sysUserPo) > 0) {
-            SysUserBo sysUserBo = BeanUtil.beanToBean(sysUserMapper.selectById(SecurityUtils.getUserId()), new SysUserBo());
+            SysUserBo sysUserBo = BeanUtils.copyDataProp(sysUserMapper.selectById(SecurityUtils.getUserId()), new SysUserBo());
             LoginUser loginUser = SecurityUtils.getLoginUser();
             loginUser.setSysUserBo(sysUserBo);
 
-            UserBasicInfoPo userBasicInfoPoUpIn = BeanUtil.beanToBean(upSysUserDto, new UserBasicInfoPo());
+            UserBasicInfoPo userBasicInfoPoUpIn = BeanUtils.copyDataProp(upSysUserDto, new UserBasicInfoPo());
 
             UserBasicInfoPo userBasicInfoPo = iUserBasicInfoService.getInfo(sysUserPo.getUserId());
             if (StringUtils.isNotNull(userBasicInfoPo)) {
-                userBasicInfoPoUpIn = BeanUtil.beanToBean(upSysUserDto, new UserBasicInfoPo());
+                userBasicInfoPoUpIn = BeanUtils.copyDataProp(upSysUserDto, new UserBasicInfoPo());
                 userBasicInfoPoUpIn.setUpdateTime(new Date());
                 userBasicInfoPoUpIn.setUpdateBy(SecurityUtils.getUsername());
                 iUserBasicInfoService.update(userBasicInfoPoUpIn, Wrappers.lambdaUpdate(UserBasicInfoPo.class).eq(UserBasicInfoPo::getUserId, userBasicInfoPoUpIn.getUserId()));
@@ -138,7 +137,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserPo> im
 
     @Override
     public boolean updateUserPassStu(UpPwdStuDto upPwdStuDto) {
-        SysUserPo sysUserPo = BeanUtil.beanToBean(upPwdStuDto, new SysUserPo());
+        SysUserPo sysUserPo = BeanUtils.copyDataProp(upPwdStuDto, new SysUserPo());
         if (sysUserMapper.updateById(sysUserPo) > 0) {
             return true;
         }
